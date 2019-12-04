@@ -19,7 +19,7 @@ function senddata(message){
     const dgram = require('dgram');
     message = Buffer.from( JSON.stringify(message));
     const client = dgram.createSocket('udp4');
-    client.send(message, 41234, 'localhost', (err) => {
+    client.send(message, 41234, config.host||"localhost", (err) => {
         client.close();
     });
 }
