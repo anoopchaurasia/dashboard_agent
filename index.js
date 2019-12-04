@@ -1,39 +1,23 @@
 'use strict';
 let config = require("./.config.json");
-console.log(config);
 async function interval_function(){
-    console.log("ssdsd")
     config.syscommands.forEach(async x=>{
         let data = await runCommand(x);
-        console.log(data.toString(), x)
-        senddata(data);
+        console.log(data, x);
+        senddata({data, server_name:config.name, command_name: data.name});
     });
-    senddata(process.memoryUsage());
+    senddata({data: process.memoryUsage(), server_name:config.name, command_name: config.name});
 }
 
 function runCommand(command){
-    return new Promise((r, e)=> {
         console.log(command)
-        const { spawn } = require( 'child_process' );
-        const ls = spawn( command.command, command.args );
-
-        ls.stdout.on( 'data', data => {
-            r(data);
-        } );
-
-        ls.stderr.on( 'data', data => {
-            e();
-        } );
-        ls.on( 'close', code => {
-            console.log( `child process exited with code ${code}` );
-        } );
-    });
+        const { execSync } = require( 'child_process' );
+        return execSync( command.value ).toString();
 }
-
 
 function senddata(message){
     const dgram = require('dgram');
- //   const message = Buffer.from(data);
+    message = Buffer.from( JSON.stringify(message));
     const client = dgram.createSocket('udp4');
     client.send(message, 41234, 'localhost', (err) => {
         client.close();
