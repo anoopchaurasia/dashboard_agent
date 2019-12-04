@@ -1,0 +1,5 @@
+{
+    "name":"imap_redis",
+    "interval": 18000000,
+    "syscommands": [["redis-cli, LLEN new_data_avail"]]
+}
