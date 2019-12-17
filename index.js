@@ -4,9 +4,9 @@ async function interval_function(){
     config.syscommands.forEach(async x=>{
         let data = await runCommand(x);
         console.log(data, x);
-        senddata({data, server_name:config.name, command_name: x.name});
+        senddata({data, server_name:config.name, command_name: x.name, formatter: x.formatter});
     });
-    senddata({data: process.memoryUsage(), server_name:config.name, command_name: config.name});
+    senddata({data: process.memoryUsage(), server_name:config.name, command_name: config.name, formatter: config.formatter});
 }
 
 function runCommand(command){
