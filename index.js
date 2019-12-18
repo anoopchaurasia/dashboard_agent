@@ -2,7 +2,7 @@
 let config = require("./.config.json");
 async function interval_function(){
         console.log("dfdf")
-    let ec2metadata = runCommand({value: "ec2metadata"}).ec2metadata.split("\n");
+    let ec2metadata = runCommand({value: "ec2metadata"}).split("\n");
     let server_name = config.name +"->"+ ec2metadata.filter(x=>x.match(/local-ipv4/))[0].split(":")[1];
     config.syscommands.forEach(async x=>{
         let data = runCommand(x);
