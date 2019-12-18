@@ -2,15 +2,14 @@
 let config = require("./.config.json");
 async function interval_function(){
     config.syscommands.forEach(async x=>{
-        let data = await runCommand(x);
-        console.log(data, x);
+        let data = runCommand(x);
         senddata({data, server_name:config.name, command_name: x.name, formatter: x.formatter});
     });
-    senddata({data: process.memoryUsage(), server_name:config.name, command_name: config.name, formatter: config.formatter});
+
+    senddata({data: runCommand("ec2metadata"), server_name:config.name, command_name: config.name, formatter: "ec2metadata"});
 }
 
 function runCommand(command){
-        console.log(command)
         const { execSync } = require( 'child_process' );
         return execSync( command.value ).toString();
 }
