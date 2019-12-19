@@ -37,6 +37,8 @@ process.on("SIGINT",async function(){
         })
         await interval_function();
     } finally{
-        process.exit(0);
+        setTimeout(x=>{
+            process.exit(0);
+        }, 500)
     }
 });
