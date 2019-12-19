@@ -19,7 +19,7 @@ function runCommand(command){
 
 function senddata(message){
     const dgram = require('dgram');
-console.log(message.command_name)
+    console.log(message.command_name)
     message = Buffer.from( JSON.stringify(message));
         const client = dgram.createSocket('udp4');
     client.send(message, 41234, config.host||"localhost", (err) => {
@@ -28,3 +28,16 @@ console.log(message.command_name)
 }
 setInterval(interval_function, config.interval);
 interval_function();
+
+process.on("SIGINT", function(){
+    try{
+        config.syscommands.unshift({
+            "name": "pm2 logs shutdown",
+            "value":"pm2 logs --nostream --lines=100",
+            "formatter": "pm2_log"
+        })
+        interval_function();
+    } finally{
+        process.exit(0);
+    }
+});
